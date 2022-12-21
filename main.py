@@ -27,15 +27,52 @@ def recognise():
 def extra_spaces():
     ''' функция убирает лишние пробелы'''
 
-    with open(r'output_text\text.txt', mode='r', encoding='utf-8') as file:
+    with open(r'output_text\text.txt', mode='r+', encoding='utf-8') as file:
         reader = file.read()
-        reader.replace('  ', ' ')
-        print(reader)
+        file.write(reader.replace('  ', ' '))
 
+
+def remove_word_wraps():
+    ''' функция убирает переносы слов,
+    если слово пишется через дефис и попадает
+    в конец строки - дефис уберётся
+    '''
+
+    with open(r'output_text\text.txt', mode='r', encoding='utf-8') as file:
+        result_text = ''
+        for line in file.readlines():
+            if len(line) > 1 and line[-2] == '-':
+                result_text += line[:-2:]
+            else:
+                result_text += line
+    with open(r'output_text\text.txt', mode='w', encoding='utf-8') as file:
+        file.write(result_text)
+
+
+def paragraph_break():
+    ''' функция оставляет перенос строки
+    только после абзаца.
+    Если строка заканчивается знаком препинания
+    и есть перенос строки, тогда распознается как абзац
+    '''
+
+    with open(r'output_text\text.txt', mode='r', encoding='utf-8') as file:
+        result_text = ''
+        for line in file.readlines():
+            if len(line) > 1 and line[-2] in '.,!?:':
+                print(line)
+                result_text += line
+            else:
+                result_text += line[:-1:] + ' '
+                print(line)
+    with open(r'output_text\text.txt', mode='w', encoding='utf-8') as file:
+        file.write(result_text)
 
 def main():
     recognise()
     extra_spaces()
+    remove_word_wraps()
+    # paragraph_break()
 
 
 if __name__=='__main__':
