@@ -58,21 +58,27 @@ def paragraph_break():
 
     with open(r'output_text\text.txt', mode='r', encoding='utf-8') as file:
         result_text = ''
+        count = 0
         for line in file.readlines():
+            print(f'{count}string is --- {line}')
             if len(line) > 1 and line[-2] in '.,!?:':
-                print(line)
+                print(f'-2 element is {line[-2]}')
                 result_text += line
-            else:
+            elif len(line) > 1:
                 result_text += line[:-1:] + ' '
-                print(line)
+                print(line[:-1:])
+            else:
+                pass
+            count += 1
     with open(r'output_text\text.txt', mode='w', encoding='utf-8') as file:
         file.write(result_text)
 
+
 def main():
     recognise()
-    extra_spaces()
+    # extra_spaces()
     remove_word_wraps()
-    # paragraph_break()
+    paragraph_break()
 
 
 if __name__=='__main__':
